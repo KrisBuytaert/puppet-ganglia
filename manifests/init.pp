@@ -1,6 +1,6 @@
-class ganglia-client {
+class ganglia::client {
 
-  $deaf_yesno = "yes";
+  $deaf_yesno = "yes"
 
   case $ganglia_cluster {
       engprod: { 
@@ -52,13 +52,13 @@ class ganglia-client {
 }
 
 
-class ganglia-server {
+class ganglia::server {
 
   package { 
     [ ganglia-gmond, ganglia-gmond-modules-python ] : ensure => latest;
   }
 
-  $deaf_yesno = "yes";
+  $deaf_yesno = "yes"
   $ganglia_cluster_name = "Prod"
   $ganglia_port = 8649
   $ganglia_send_metadata_interval = 60
@@ -71,7 +71,7 @@ class ganglia-server {
       backup => false,
       mode => 755,
       require => Package["ganglia-gmond"],
-      content => template("$file_base/templates/gmond-aggregator.conf.erb");
+      content => template("ganglia/gmond-aggregator.conf.erb");
   }
 
 
