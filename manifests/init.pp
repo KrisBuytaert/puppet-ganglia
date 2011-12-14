@@ -1,5 +1,18 @@
-class ganglia::client {
 
+
+class ganglia::common {
+
+  package { 
+    [ ganglia-gmond, ganglia-gmond-modules-python ] : ensure => latest;
+  }
+
+
+}
+
+
+class ganglia::client {
+  include ganglia::common 
+  
   $deaf_yesno = "yes"
 
   case $ganglia_cluster {
@@ -17,9 +30,6 @@ class ganglia::client {
       }
   }
 
-  package { 
-    [ ganglia-gmond, ganglia-gmond-modules-python ] : ensure => latest;
-  }
 
   file { 
     gmond-conf:
@@ -54,9 +64,8 @@ class ganglia::client {
 
 class ganglia::server {
 
-  package { 
-    [ ganglia-gmond, ganglia-gmond-modules-python ] : ensure => latest;
-  }
+
+  include ganglia::common
 
   $deaf_yesno = "yes"
   $ganglia_cluster_name = "Prod"
