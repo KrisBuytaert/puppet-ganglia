@@ -39,7 +39,7 @@ class ganglia::client {
       backup => false,
       mode => 755,
       require => Package["ganglia-gmond"],
-      content => template("$file_base/templates/gmond.conf.erb");
+      content => template("ganglia/gmond.conf.erb");
 
     "/usr/bin/gmetric":
       require => Package["ganglia-gmond"],
