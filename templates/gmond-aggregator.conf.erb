@@ -35,6 +35,12 @@ udp_recv_channel {
   port = <%= ganglia_port %>
 }
 
+udp_send_channel {
+  host =  <%= ganglia_host %>
+  port =  <%= ganglia_port %>
+  ttl = 1
+}
+
 tcp_accept_channel {
   port = <%= ganglia_port %>
 }

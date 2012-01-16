@@ -2,36 +2,24 @@
 
 class ganglia::common {
 
-  package { 
-    [ ganglia-gmond, ganglia-gmond-modules-python ] : ensure => latest;
+  package {
+    [ ganglia-gmond, ganglia-gmond-modules-python ] :
+      ensure => latest;
   }
 
 
 }
 
+class ganglia::gmond ($deaf_yesno = 'yes', 
+                       $ganglia_cluster_name, 
+                       $ganglia_port = 8649, 
+                       $ganglia_host, 
+                       $ganglia_send_metadata_interval = 60) {
 
-class ganglia::client {
-  include ganglia::common 
-  
-  $deaf_yesno = "yes"
-
-  case $ganglia_cluster {
-      engprod: { 
-	$ganglia_cluster_name = "Prod"
-	$ganglia_port = 8649
-	$ganglia_host = "ganglia_server.domain.com"
-	$ganglia_send_metadata_interval = 60
-      }
-      default: { 
-	$ganglia_cluster_name = "Test"
-	$ganglia_port = 9005
-	$ganglia_host = "ganglia_server.domain.com"
-	$ganglia_send_metadata_interval = 600
-      }
-  }
+  #  All of these should be parameters 
 
 
-  file { 
+  file {
     gmond-conf:
       path => "/etc/ganglia/gmond.conf",
       owner => root,
@@ -56,23 +44,22 @@ class ganglia::client {
       ensure => running,
       enable => true,
       require => Package["ganglia-gmond"],
-      subscribe => [ File[gmond-conf],Package["ganglia-gmond"] , Package["ganglia-gmond-modules-python" ]]
+      #      subscribe => [ File[gmond-conf],Package["ganglia-gmond"] , Package["ganglia-gmond-modules-python" ]]
+            subscribe => [ Package["ganglia-gmond"] , Package["ganglia-gmond-modules-python" ]]
   }
 
 }
 
 
-class ganglia::server {
+class ganglia::gmetad ($deaf_yesno = 'yes', 
+                       $ganglia_cluster_name, 
+                       $ganglia_host,
+                       $ganglia_port = 8649, 
+                       $ganglia_send_metadata_interval = 60) {
 
 
-  include ganglia::common
 
-  $deaf_yesno = "yes"
-  $ganglia_cluster_name = "Prod"
-  $ganglia_port = 8649
-  $ganglia_send_metadata_interval = 60
-
- file { 
+   file {
     gmond-conf:
       path => "/etc/ganglia/gmond.conf",
       owner => root,
@@ -84,15 +71,15 @@ class ganglia::server {
   }
 
 
-  package { 
-	ganglia-gmetad: 
-		ensure => latest;
+  package {
+    ganglia-gmetad:
+      ensure => latest;
   }
 
   service {
-	gmetad:
-		enable => true,
-    		ensure => running;
+    gmetad:
+      enable => true,
+      ensure => running;
   }
 
 }
