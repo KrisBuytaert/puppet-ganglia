@@ -1,3 +1,15 @@
+class ganglia::web {
+
+
+  #      * DWOO compiled templates directory '/var/lib/ganglia/dwoo' is not writeable.
+  #        Please adjust $conf['dwoo_compiled_dir'].
+  #      * Views directory '/var/lib/ganglia/conf' is not readable.
+  #        Please adjust $conf['views_dir'].
+  #      * Directory used to store configuration information '/var/lib/ganglia/conf' is not readable.
+  #        Please adjust $conf['conf_dir'].
+
+
+}
 
 
 class ganglia::common {
@@ -11,10 +23,11 @@ class ganglia::common {
 }
 
 class ganglia::gmond ($deaf_yesno = 'yes', 
-                       $ganglia_cluster_name, 
-                       $ganglia_port = 8649, 
-                       $ganglia_host, 
-                       $ganglia_send_metadata_interval = 60) {
+                      $mute_yesno = 'no', 
+                      $ganglia_cluster_name, 
+                      $ganglia_port = 8649, 
+                      $ganglia_host, 
+                      $ganglia_send_metadata_interval = 60) {
 
   #  All of these should be parameters 
 
@@ -52,6 +65,7 @@ class ganglia::gmond ($deaf_yesno = 'yes',
 
 
 class ganglia::gmetad ($deaf_yesno = 'yes', 
+                       $mute_yesno = 'yes', 
                        $ganglia_cluster_name, 
                        $ganglia_host,
                        $ganglia_port = 8649, 
