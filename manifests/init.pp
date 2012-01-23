@@ -8,7 +8,28 @@ class ganglia::web {
   #      * Directory used to store configuration information '/var/lib/ganglia/conf' is not readable.
   #        Please adjust $conf['conf_dir'].
 
+  package {"gweb":
+    ensure => present;
+  }
 
+ file { '/var/lib/ganglia/dwoo/':
+   ensure    => 'directory',
+   owner     => 'nobody',
+   group     => 'nobody',
+   mode      => '777',
+ }
+
+
+ file { '/var/lib/ganglia/conf':
+   ensure    => 'directory',
+   owner     => 'nobody',
+   group     => 'nobody',
+   mode      => '755',
+ }
+
+ service {"httpd":
+  ensure => running;
+ }
 }
 
 
