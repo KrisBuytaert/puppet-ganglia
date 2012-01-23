@@ -22,12 +22,15 @@ class ganglia::common {
 
 }
 
-class ganglia::gmond ($deaf_yesno = 'yes', 
-                      $mute_yesno = 'no', 
-                      $ganglia_cluster_name, 
-                      $ganglia_port = 8649, 
-                      $ganglia_host, 
-                      $ganglia_send_metadata_interval = 60) {
+class ganglia::gmond  ($deaf_yesno = 'yes',
+                       $mute_yesno = 'no',
+                       $host_dmax  = '0',
+                       $ganglia_cluster_name,
+                       $ganglia_port = 8649,
+                       $enable_udp_recv_channel ='',
+                       $enable_tcp_accept_channel ='',
+                       $ganglia_host,
+                       $ganglia_send_metadata_interval = 60) {
 
   #  All of these should be parameters 
 
@@ -67,22 +70,36 @@ class ganglia::gmond ($deaf_yesno = 'yes',
 class ganglia::gmetad ($deaf_yesno = 'yes', 
                        $mute_yesno = 'yes', 
                        $ganglia_cluster_name, 
+                       $host_dmax  = '86400',
+                       $enable_udp_recv_channel ='yes',
                        $ganglia_host,
+                       $enable_tcp_accept_channel ='yes',
                        $ganglia_port = 8649, 
                        $ganglia_send_metadata_interval = 60) {
 
 
 
-   file {
-    gmond-conf:
-      path => "/etc/ganglia/gmond.conf",
-      owner => root,
-      group => root,
-      backup => false,
-      mode => 755,
-      require => Package["ganglia-gmond"],
-      content => template("ganglia/gmond-aggregator.conf.erb");
+
+  file {
+    "/etc/ganglia/gmetad.conf":
+      owner     => '0',
+      group     => '0',
+      content   => template("ganglia/gmetad.conf.erb");
   }
+
+
+  # Removing gmond.conf from this class ... given that it is fully parametrized now you should be able to call 
+  # gmond and gmetad on one host and have no conflicts 
+  # file {
+  #  gmond-conf:
+  #    path => "/etc/ganglia/gmond.conf",
+  #    owner => root,
+  #    group => root,
+  #    backup => false,
+  #    mode => 755,
+  #    require => Package["ganglia-gmond"],
+  #    content => template("ganglia/gmond-aggregator.conf.erb");
+  #}
 
 
   package {
