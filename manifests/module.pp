@@ -5,7 +5,7 @@
 class ganglia::module {
 
   $id = 'unifiedpost-puppet-ganglia'
-  $version = '0.1-dev'
+  $version = '0.1'
 
 }
 
