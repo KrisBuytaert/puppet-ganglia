@@ -29,15 +29,27 @@ class ganglia::web {
 
   file { '/var/lib/ganglia/dwoo/':
     ensure    => 'directory',
-    owner     => 'nobody',
-    group     => 'nobody',
-    mode      => '0777',
+    owner     => 'apache',
+    group     => 'apache',
+    mode      => '0755',
   }
 
   file { '/var/lib/ganglia/conf':
     ensure    => 'directory',
-    owner     => 'nobody',
-    group     => 'nobody',
+    owner     => 'apache',
+    group     => 'apache',
+    mode      => '0755',
+  }
+  file { '/var/lib/ganglia/dwoo/cache':
+    ensure    => 'directory',
+    owner     => 'apache',
+    group     => 'apache',
+    mode      => '0755',
+  }
+  file { '/var/lib/ganglia/dwoo/compiled':
+    ensure    => 'directory',
+    owner     => 'apache',
+    group     => 'apache',
     mode      => '0755',
   }
 
