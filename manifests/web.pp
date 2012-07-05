@@ -24,7 +24,7 @@ class ganglia::web {
   # Please adjust $conf['conf_dir'].
 
   package {'gweb':
-    ensure => present;
+    ensure => latest;
   }
 
   file { '/var/lib/ganglia/dwoo/':
@@ -40,6 +40,7 @@ class ganglia::web {
     group     => 'apache',
     mode      => '0755',
   }
+
   file { '/var/lib/ganglia/dwoo/cache':
     ensure    => 'directory',
     owner     => 'apache',
